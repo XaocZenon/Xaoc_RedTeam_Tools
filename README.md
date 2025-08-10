@@ -17,6 +17,10 @@ Persian repository for redteamers tools
 
 > 🔗 Blue team soon!
 
+> **Warning** 
+> 
+> *The materials in this repository are for informational and educational purposes only. They are not intended for use in any illegal activities.*
+
 > **هشدار**
 >
 > *مطالب موجود در این مخزن صرفاً برای اهداف آموزشی و اطلاع‌رسانی تهیه شده‌اند. استفاده از آن‌ها در فعالیت‌های غیرقانونی مد نظر نیست.*
